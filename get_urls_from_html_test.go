@@ -72,7 +72,7 @@ func TestGetURLsFromHTML(t *testing.T) {
 	</body>
 </html>
 `,
-			expected: nil,
+			expected: []string{},
 		},
 		{
 			name:     "bad HTML",
@@ -98,12 +98,12 @@ func TestGetURLsFromHTML(t *testing.T) {
 	</body>
 </html>
 `,
-			expected: nil,
+			expected: []string{},
 		},
-		// 		{
-		// 			name:     "handle invalid base URL",
-		// 			inputURL: `:\\invalidBaseURL`,
-		// 			inputBody: `
+		// {
+		// 	name:     "handle invalid base URL",
+		// 	inputURL: `:\\invalidBaseURL`,
+		// 	inputBody: `
 		// <html>
 		// 	<body>
 		// 		<a href="/path">
@@ -112,9 +112,9 @@ func TestGetURLsFromHTML(t *testing.T) {
 		// 	</body>
 		// </html>
 		// `,
-		// 			expected:      nil,
-		// 			errorContains: "couldn't parse base URL",
-		// 		},
+		// 	expected:      nil,
+		// 	errorContains: "couldn't parse base URL",
+		// },
 	}
 
 	for i, tc := range cases {
