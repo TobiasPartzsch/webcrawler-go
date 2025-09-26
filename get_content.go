@@ -1,6 +1,7 @@
 package main
 
 import (
+	"regexp"
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
@@ -11,8 +12,7 @@ func getH1FromHTML(html string) string {
 	if err != nil {
 		return ""
 	}
-	h1 := doc.Find("h1").First().Text()
-	return strings.TrimSpace(h1)
+	return normalizeText(doc.Find("h1").First().Text())
 }
 
 func getFirstParagraphFromHTML(html string) string {
@@ -29,5 +29,13 @@ func getFirstParagraphFromHTML(html string) string {
 		p = doc.Find("p").First().Text()
 	}
 
-	return strings.TrimSpace(p)
+	return normalizeText(p)
+}
+
+var spaceRe = regexp.MustCompile(`\s+`)
+
+func normalizeText(s string) string {
+	s = strings.TrimSpace(s)
+	s = spaceRe.ReplaceAllString(s, " ")
+	return s
 }

@@ -53,7 +53,8 @@ func TestGetFirstParagraphFromHTML(t *testing.T) {
 		},
 		{
 			name: "whitespace trim",
-			html: `<main><p>  Trim me \n\t</p></main>`,
+			html: `<main><p>  Trim me 
+				</p></main>`,
 			want: "Trim me",
 		},
 		{
