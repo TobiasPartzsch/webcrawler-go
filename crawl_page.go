@@ -5,6 +5,11 @@ import (
 	"net/url"
 )
 
+const crawlMsg = "crawling page '%s'\n"
+const errMsgParsing = "Error - crawlPage: couldn't parse URL '%s': %v\n"
+const errMsgNormalization = "Error - normalizedURL: %v\n"
+const errMsgHTML = "Error - getHTML: %v\n"
+
 func (cfg *config) crawlPage(rawCurrentURL string) {
 	cfg.concurrencyControl <- struct{}{}
 	defer func() {
@@ -14,7 +19,7 @@ func (cfg *config) crawlPage(rawCurrentURL string) {
 
 	currentURL, err := url.Parse(rawCurrentURL)
 	if err != nil {
-		fmt.Printf("Error - crawlPage: couldn't parse URL '%s': %v\n", rawCurrentURL, err)
+		fmt.Printf(errMsgParsing, rawCurrentURL, err)
 		return
 	}
 
@@ -25,7 +30,11 @@ func (cfg *config) crawlPage(rawCurrentURL string) {
 
 	normalizedURL, err := normalizeURL(rawCurrentURL)
 	if err != nil {
-		fmt.Printf("Error - normalizedURL: %v", err)
+		fmt.Printf(errMsgNormalization, err)
+		return
+	}
+
+	if cfg.reachedMaxPages() {
 		return
 	}
 
@@ -35,11 +44,11 @@ func (cfg *config) crawlPage(rawCurrentURL string) {
 		return
 	}
 
-	fmt.Printf("crawling %s\n", rawCurrentURL)
+	fmt.Printf(crawlMsg, rawCurrentURL)
 
 	htmlBody, err := getHTML(rawCurrentURL)
 	if err != nil {
-		fmt.Printf("Error - getHTML: %v", err)
+		fmt.Printf(errMsgHTML, err)
 		return
 	}
 
