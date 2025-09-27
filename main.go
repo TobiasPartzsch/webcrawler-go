@@ -11,15 +11,22 @@ var (
 	errTooManyArg = errors.New("too many arguments provided")
 )
 
-const startingCrawlMsg = `starting crawl of: %s\n`
+const startingCrawlMsg = "starting crawl of: %s\n"
 
 func main() {
-	baseURL, err := validateArgs()
+	rawBaseURL, err := validateArgs()
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	fmt.Printf(startingCrawlMsg, baseURL)
+	fmt.Printf(startingCrawlMsg, rawBaseURL)
+
+	htmlBody, err := getHTML(rawBaseURL)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	fmt.Print(htmlBody)
 }
 
 func validateArgs() (string, error) {
