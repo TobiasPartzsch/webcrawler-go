@@ -33,9 +33,9 @@ func main() {
 	go cfg.crawlPage(cliInput.baseURL)
 	cfg.wg.Wait()
 
-	for normalizedURL, pd := range cfg.pages {
-		// TODO: just print count
-		fmt.Printf("%v - %s\n", pd, normalizedURL)
+	if err := writeCSVRport(cfg.pages, "report.csv"); err != nil {
+		fmt.Printf("error writing CSV: %v\n", err)
+		os.Exit(1)
 	}
 }
 

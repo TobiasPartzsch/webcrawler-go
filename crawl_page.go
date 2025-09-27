@@ -5,7 +5,7 @@ import (
 	"net/url"
 )
 
-const crawlMsg = "crawling page '%s'\n"
+// const crawlMsg = "crawling page '%s'\n"
 const errMsgParsing = "Error - crawlPage: couldn't parse URL '%s': %v\n"
 const errMsgNormalization = "Error - normalizedURL: %v\n"
 const errMsgHTML = "Error - getHTML: %v\n"
@@ -44,7 +44,7 @@ func (cfg *config) crawlPage(rawCurrentURL string) {
 		return
 	}
 
-	fmt.Printf(crawlMsg, rawCurrentURL)
+	// fmt.Printf(crawlMsg, rawCurrentURL)
 
 	htmlBody, err := getHTML(rawCurrentURL)
 	if err != nil {
